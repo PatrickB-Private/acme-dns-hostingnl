@@ -1,4 +1,4 @@
-# acme-sh-dns-hostingnl
+# acme-dns-hostingnl
 
 DNS API hook for Hosting.nl that enables automatic Let's Encrypt (ACME) DNS-01 certificate issuance and renewal with **acme.sh**.
 
