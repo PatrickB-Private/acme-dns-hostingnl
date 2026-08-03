@@ -78,9 +78,41 @@ This hook only performs DNS validation.
 
 Certificate installation remains the responsibility of acme.sh using the normal `--install-cert` command appropriate for your system.
 
-## Notes
+## Implementation notes
 
-Hosting.nl requires TXT record contents to be submitted as quoted strings. The hook automatically performs this conversion.
+This hook is implemented as a standard acme.sh DNS API plugin and uses the helper functions provided by acme.sh (`_get`, `_post`, `_info`, `_err`, etc.). It contains no platform-specific code and should work on any operating system supported by acme.sh.
+
+### Design principles
+
+The implementation aims to:
+
+* remain compatible with the acme.sh DNS API hook conventions;
+* minimise external dependencies by using only POSIX shell utilities;
+* provide meaningful diagnostics while allowing acme.sh to handle certificate issuance and renewal;
+* fail fast when the Hosting.nl API reports an error rather than assuming success.
+
+### Hosting.nl API specifics
+
+The Hosting.nl DNS API has several implementation details that differ from many other DNS providers:
+
+* TXT record contents must be submitted as **quoted strings**. The hook automatically applies the required quoting when creating ACME challenge records.
+* Authentication is performed using a Hosting.nl API token supplied through the `HOSTINGNL_API_TOKEN` environment variable.
+* The DNS zone can be specified explicitly using the optional `HOSTINGNL_ZONE` environment variable. When omitted, the hook attempts to determine the appropriate zone automatically (if supported by the installed version).
+* API responses are validated before reporting success to acme.sh. Any errors returned by the Hosting.nl API are propagated to the user.
+
+### Compatibility
+
+The hook has been tested with Let's Encrypt using DNS-01 validation on TrueNAS SCALE. However, it contains no TrueNAS-specific functionality and should operate on any platform capable of running acme.sh.
+
+### Future improvements
+
+Possible future enhancements include:
+
+* improved automatic DNS zone detection;
+* support for accounts managing large numbers of domains;
+* additional validation of API responses;
+* automated tests against a mock Hosting.nl API;
+* upstream contribution to the acme.sh project.
 
 ## Troubleshooting
 
