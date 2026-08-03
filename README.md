@@ -133,6 +133,14 @@ The implementation aims to:
 * provide meaningful diagnostics while allowing acme.sh to handle certificate issuance and renewal;
 * fail fast when the Hosting.nl API reports an error rather than assuming success.
 
+### Quality goals
+
+This project aims to:
+
+* be POSIX shell compatible;
+* pass ShellCheck without warnings;
+* avoid external dependencies such as jq;
+
 ### Hosting.nl API specifics
 
 The Hosting.nl DNS API has several implementation details that differ from many other DNS providers:
