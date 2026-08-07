@@ -11,4 +11,4 @@ v1.2.0
     Better error handling
 
 v1.3.0
-    Added pagination to `GET /domains`:wq
+    Added pagination to `GET /domains`
